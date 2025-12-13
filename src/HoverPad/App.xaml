@@ -1,0 +1,10 @@
+<Application x:Class="HoverPad.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HoverPad"
+             xmlns:converters="clr-namespace:HoverPad.Converters"
+             ShutdownMode="OnExplicitShutdown">
+    <Application.Resources>
+        <converters:GapToMarginConverter x:Key="GapToMarginConverter"/>
+    </Application.Resources>
+</Application>
