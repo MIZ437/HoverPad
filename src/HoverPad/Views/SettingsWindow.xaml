@@ -264,12 +264,12 @@
                                FontSize="12" TextWrapping="Wrap" Margin="0,5,0,12"/>
 
                     <TextBlock Text="アクション内容:" Margin="0,0,0,5" FontSize="13"/>
-                    <TextBox x:Name="ActionTextBox" Height="80"
+                    <TextBox x:Name="ActionTextBox" Height="50"
                              TextWrapping="Wrap" AcceptsReturn="True"
                              VerticalScrollBarVisibility="Auto"/>
 
-                    <Button Content="このボタンを保存" Click="SaveButton_Click" Margin="0,15,0,0"
-                            HorizontalAlignment="Left"/>
+                    <Button Content="このボタンを保存" Click="SaveButton_Click" Margin="0,12,0,0"
+                            HorizontalAlignment="Left" Height="32" Padding="15,6"/>
                 </StackPanel>
             </Border>
         </Grid>

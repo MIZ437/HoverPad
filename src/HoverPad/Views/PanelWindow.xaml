@@ -90,12 +90,22 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- ヘッダー（設定ボタン） -->
+            <!-- ヘッダー（設定・非表示・終了ボタン） -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,4">
                 <Button Style="{StaticResource SettingsButtonStyle}"
                         Click="SettingsButton_Click"
-                        ToolTip="設定">
+                        ToolTip="設定" Margin="0,0,4,0">
                     <TextBlock Text="&#x2699;" FontSize="16"/>
+                </Button>
+                <Button Style="{StaticResource SettingsButtonStyle}"
+                        Click="HideButton_Click"
+                        ToolTip="非表示" Margin="0,0,4,0">
+                    <TextBlock Text="👁" FontSize="14"/>
+                </Button>
+                <Button Style="{StaticResource SettingsButtonStyle}"
+                        Click="ExitButton_Click"
+                        ToolTip="終了">
+                    <TextBlock Text="⏻" FontSize="14"/>
                 </Button>
             </StackPanel>
 

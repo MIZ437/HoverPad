@@ -397,6 +397,19 @@ public partial class SettingsWindow : Window
 
     private async void SaveAndClose_Click(object sender, RoutedEventArgs e)
     {
+        // アクションが登録されていないボタンをチェック
+        var buttonsWithoutActions = _panelViewModel.Panel.Buttons
+            .Where(b => b.Actions == null || b.Actions.Count == 0)
+            .ToList();
+
+        if (buttonsWithoutActions.Count > 0)
+        {
+            var buttonNames = string.Join("\n", buttonsWithoutActions.Select(b => $"・{b.Icon} {b.Label}"));
+            MessageBox.Show($"以下のボタンにアクションが登録されていません。\n\n{buttonNames}\n\nボタン一覧から該当ボタンを選択し、「アクション内容」を入力してから「このボタンを保存」を押してください。",
+                "エラー", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
         // グリッドサイズの更新
         _panelViewModel.Panel.Rows = RowsComboBox.SelectedIndex + 1;
         _panelViewModel.Panel.Cols = ColsComboBox.SelectedIndex + 1;

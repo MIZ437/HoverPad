@@ -70,4 +70,32 @@ public partial class PanelWindow : Window
     {
         SettingsRequested?.Invoke(this, EventArgs.Empty);
     }
+
+    private void HideButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is PanelViewModel vm)
+        {
+            var hotkey = vm.Panel.Hotkey ?? "Ctrl+Shift+Space";
+            MessageBox.Show(
+                $"非表示にします。\n\n再度表示したいときは {hotkey} を押すか、\nシステムトレイのアイコンをクリックしてください。",
+                "非表示",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+            vm.Hide();
+        }
+    }
+
+    private void ExitButton_Click(object sender, RoutedEventArgs e)
+    {
+        var result = MessageBox.Show(
+            "表示/非表示を推奨しますが、アプリを終了してよろしいですか？",
+            "終了確認",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            Application.Current.Shutdown();
+        }
+    }
 }

@@ -116,6 +116,11 @@ public partial class ButtonViewModel : ObservableObject
     [RelayCommand]
     public async Task ExecuteAsync()
     {
+        if (Button.Actions == null || Button.Actions.Count == 0)
+        {
+            return;
+        }
+
         if (Button.IsToggle)
         {
             Button.ToggleState = !Button.ToggleState;
