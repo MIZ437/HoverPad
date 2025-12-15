@@ -231,46 +231,67 @@
             </StackPanel>
 
             <!-- ボタン編集 -->
-            <Border Grid.Column="1" Background="#2D2D2D" Padding="20" CornerRadius="5">
-                <StackPanel>
-                    <TextBlock Text="ボタン編集" FontWeight="Bold" FontSize="14" Margin="0,0,0,15"/>
+            <Border Grid.Column="1" Background="#2D2D2D" Padding="15" CornerRadius="5">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="ボタン編集" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                            <TextBlock Text="ラベル:" Margin="0,0,0,5" FontSize="13"/>
-                            <TextBox x:Name="LabelTextBox" Margin="0,0,0,15"/>
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="ラベル:" Margin="0,0,0,4" FontSize="13"/>
+                                <TextBox x:Name="LabelTextBox" Margin="0,0,0,10"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock Text="アイコン (絵文字):" Margin="0,0,0,4" FontSize="13"/>
+                                <TextBox x:Name="IconTextBox" Margin="0,0,0,10"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="アクションタイプ:" Margin="0,0,0,4" FontSize="13"/>
+                        <ComboBox x:Name="ActionTypeComboBox" Margin="0,0,0,4"
+                                  SelectionChanged="ActionType_Changed">
+                            <ComboBoxItem Content="ホットキー" Tag="Hotkey"/>
+                            <ComboBoxItem Content="アプリ/URL起動" Tag="Open"/>
+                            <ComboBoxItem Content="コマンド実行" Tag="Command"/>
+                            <ComboBoxItem Content="テキスト入力" Tag="Text"/>
+                        </ComboBox>
+                        <TextBlock x:Name="ActionHelpText" Text="" Foreground="#AAA"
+                                   FontSize="11" TextWrapping="Wrap" Margin="0,2,0,6"/>
+
+                        <!-- アプリ選択 (アプリ/URL起動の場合のみ表示) -->
+                        <StackPanel x:Name="AppSelectPanel" Visibility="Collapsed">
+                            <TextBlock Text="アプリを選択:" Margin="0,0,0,4" FontSize="13"/>
+                            <ComboBox x:Name="AppSelectComboBox" Margin="0,0,0,6"
+                                      SelectionChanged="AppSelect_Changed">
+                                <ComboBoxItem Content="Google Chrome" Tag="chrome.exe"/>
+                                <ComboBoxItem Content="Microsoft Edge" Tag="msedge.exe"/>
+                                <ComboBoxItem Content="エクスプローラー" Tag="explorer.exe"/>
+                                <ComboBoxItem Content="メモ帳" Tag="notepad.exe"/>
+                                <ComboBoxItem Content="電卓" Tag="calc.exe"/>
+                                <ComboBoxItem Content="ペイント" Tag="mspaint.exe"/>
+                                <ComboBoxItem Content="Visual Studio Code" Tag="code"/>
+                                <ComboBoxItem Content="コマンドプロンプト" Tag="cmd.exe"/>
+                                <ComboBoxItem Content="PowerShell" Tag="powershell.exe"/>
+                                <ComboBoxItem Content="Windows 設定" Tag="ms-settings:"/>
+                                <ComboBoxItem Content="その他（カスタム入力）" Tag="custom"/>
+                            </ComboBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                            <TextBlock Text="アイコン (絵文字):" Margin="0,0,0,5" FontSize="13"/>
-                            <TextBox x:Name="IconTextBox" Margin="0,0,0,15"/>
-                        </StackPanel>
-                    </Grid>
+                        <TextBlock x:Name="ActionContentLabel" Text="アクション内容:" Margin="0,0,0,4" FontSize="13"/>
+                        <TextBox x:Name="ActionTextBox" Height="40"
+                                 TextWrapping="Wrap" AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"/>
 
-                    <TextBlock Text="アクションタイプ:" Margin="0,0,0,5" FontSize="13"/>
-                    <ComboBox x:Name="ActionTypeComboBox" Margin="0,0,0,5"
-                              SelectionChanged="ActionType_Changed">
-                        <ComboBoxItem Content="ホットキー" Tag="Hotkey"/>
-                        <ComboBoxItem Content="アプリ/URL起動" Tag="Open"/>
-                        <ComboBoxItem Content="コマンド実行" Tag="Command"/>
-                        <ComboBoxItem Content="テキスト入力" Tag="Text"/>
-                    </ComboBox>
-                    <TextBlock x:Name="ActionHelpText" Text="" Foreground="#AAA"
-                               FontSize="12" TextWrapping="Wrap" Margin="0,5,0,12"/>
-
-                    <TextBlock Text="アクション内容:" Margin="0,0,0,5" FontSize="13"/>
-                    <TextBox x:Name="ActionTextBox" Height="50"
-                             TextWrapping="Wrap" AcceptsReturn="True"
-                             VerticalScrollBarVisibility="Auto"/>
-
-                    <Button Content="このボタンを保存" Click="SaveButton_Click" Margin="0,12,0,0"
-                            HorizontalAlignment="Left" Height="32" Padding="15,6"/>
-                </StackPanel>
+                        <Button Content="このボタンを保存" Click="SaveButton_Click" Margin="0,10,0,0"
+                                HorizontalAlignment="Left" Height="30" Padding="12,5"/>
+                    </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
 

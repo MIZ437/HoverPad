@@ -277,7 +277,14 @@ public partial class SettingsWindow : Window
             };
 
             // アクション内容の表示
-            ActionTextBox.Text = GetActionText(action);
+            var actionText = GetActionText(action);
+            ActionTextBox.Text = actionText;
+
+            // Openタイプの場合、アプリ選択を設定
+            if (action.Type == ActionType.Open)
+            {
+                SelectAppFromPath(actionText);
+            }
         }
         else
         {
@@ -285,8 +292,36 @@ public partial class SettingsWindow : Window
             ActionTextBox.Text = "";
         }
 
-        // ヘルプテキストを更新
+        // ヘルプテキストとアプリ選択パネルの表示を更新
         UpdateActionHelpText();
+        UpdateAppSelectVisibility();
+    }
+
+    private void SelectAppFromPath(string path)
+    {
+        if (AppSelectComboBox == null) return;
+
+        // パスに一致するアプリを探す
+        foreach (ComboBoxItem item in AppSelectComboBox.Items)
+        {
+            if (item.Tag?.ToString() == path)
+            {
+                AppSelectComboBox.SelectedItem = item;
+                ActionTextBox.IsEnabled = false;
+                return;
+            }
+        }
+
+        // 見つからない場合は「その他」を選択
+        foreach (ComboBoxItem item in AppSelectComboBox.Items)
+        {
+            if (item.Tag?.ToString() == "custom")
+            {
+                AppSelectComboBox.SelectedItem = item;
+                ActionTextBox.IsEnabled = true;
+                return;
+            }
+        }
     }
 
     private void UpdateActionHelpText()
@@ -297,7 +332,7 @@ public partial class SettingsWindow : Window
         ActionHelpText.Text = tag switch
         {
             "Hotkey" => "例: Ctrl+C, Ctrl+Shift+V, Alt+Tab\nキーボードショートカットを送信します",
-            "Open" => "例: notepad.exe, C:\\Program Files\\app.exe, https://google.com\nアプリ、ファイル、URLを開きます",
+            "Open" => "上のリストからアプリを選択するか、「その他」で直接入力",
             "Command" => "例: dir, ipconfig, echo Hello\nコマンドプロンプトでコマンドを実行します",
             "Text" => "入力したいテキストを記入\nクリップボード経由でテキストを貼り付けます",
             _ => ""
@@ -331,12 +366,65 @@ public partial class SettingsWindow : Window
         IconTextBox.Text = "";
         ActionTypeComboBox.SelectedIndex = 0;
         ActionTextBox.Text = "";
+        ActionTextBox.IsEnabled = true;
+        if (AppSelectComboBox != null)
+        {
+            AppSelectComboBox.SelectedIndex = -1;
+        }
     }
 
     private void ActionType_Changed(object sender, SelectionChangedEventArgs e)
     {
         if (!IsLoaded) return;
         UpdateActionHelpText();
+        UpdateAppSelectVisibility();
+    }
+
+    private void UpdateAppSelectVisibility()
+    {
+        if (AppSelectPanel == null) return;
+
+        var tag = (ActionTypeComboBox.SelectedItem as ComboBoxItem)?.Tag?.ToString();
+        if (tag == "Open")
+        {
+            AppSelectPanel.Visibility = Visibility.Visible;
+            ActionContentLabel.Text = "パス/URL（その他の場合）:";
+        }
+        else
+        {
+            AppSelectPanel.Visibility = Visibility.Collapsed;
+            ActionContentLabel.Text = "アクション内容:";
+        }
+    }
+
+    private void AppSelect_Changed(object sender, SelectionChangedEventArgs e)
+    {
+        if (!IsLoaded || AppSelectComboBox.SelectedItem == null) return;
+
+        var selectedItem = AppSelectComboBox.SelectedItem as ComboBoxItem;
+        var tag = selectedItem?.Tag?.ToString();
+        var appName = selectedItem?.Content?.ToString();
+
+        if (tag != "custom" && !string.IsNullOrEmpty(tag))
+        {
+            ActionTextBox.Text = tag;
+            ActionTextBox.IsEnabled = false;
+
+            // ラベルが空または「新規」の場合、アプリ名を自動入力
+            if (string.IsNullOrWhiteSpace(LabelTextBox.Text) || LabelTextBox.Text == "新規")
+            {
+                LabelTextBox.Text = appName;
+            }
+        }
+        else
+        {
+            ActionTextBox.IsEnabled = true;
+            if (tag == "custom")
+            {
+                ActionTextBox.Text = "";
+                ActionTextBox.Focus();
+            }
+        }
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
